@@ -1,0 +1,53 @@
+\section{Defining Box and Solvate(editconf \& solvate)}
+\subsection{Defining Box}
+when we try to display the processed molecule in the pbc box it is going out of the box. So we have to define the pbc box and place the protien inside it.
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{outofpbcbox.png}
+\end{figure}
+\paragraph{}
+To place the protein inside the box we can use the \textbf{editconf} command of Gromacs. The command is as follows.
+\begin{minted}{python}
+
+gmx editconf -f 1xej_processed.gro -o 1xej_box.gro -c -d 1.0 
+-bt cubic
+    
+\end{minted}
+
+\begin{tabular}{l l}
+     -f & : name of input file  \\
+     -o & : name of output file \\
+     -c & : place protein at center\\
+     -d & : distance from the surface of protein to surface of box\\
+     -bt & : box type (cubic,)
+\end{tabular}
+\paragraph{}
+ After executing the above command we can visualise it using  VMD
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{insidebox.png}
+\end{figure}
+
+\subsection{Adding water molecules to the box(solvate)}
+Now we can add water molecules to box by the following command in terminal
+\vspace{1cm}
+
+\begin{minted}{python}
+
+gmx solvate -cp 1xej_box.gro -cs spc216.gro -o 1xej_solv.gro 
+-p topol.top 
+    
+\end{minted}
+\begin{tabular}{c c}
+cp & : specify solute \\
+cs & : specify solvent\\
+-p & : parameter file\\
+\end{tabular}
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{waterbox_protein.png}
+\caption{Protein inside water}
+
+\end{figure}
+
