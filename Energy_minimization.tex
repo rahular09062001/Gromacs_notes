@@ -1,0 +1,100 @@
+\section{Adding Ions}
+\subsection{Molecular dynamics parameter file(.mdp)}
+To add ions to the solvate system we need an input file of extension \textbf{.tpr}. We will use a\textbf{ molecular dynamics parameter or .mdp} file as the input file for generating the .tpr file. The molecular dynamics parameters contain the parameter required for the generation of portable binary run input file . 
+
+Following is a molecular dynamics parameter file input
+
+\begin{minted}{bash}
+; ions.mdp - used as input into grompp to generate ions.tpr
+; Parameters describing what to do, when to stop and what to save
+integrator  = steep         ; Algorithm (steep = steepest descent
+minimization)
+emtol       = 1000.0        ; Stop minimization when the maximum 
+force < 1000.0 kJ/mol/nm
+emstep      = 0.01          ; Minimization step size
+nsteps      = 50000         ; Maximum number of (minimization)                   steps to perform
+
+; Parameters describing how to find the neighbors of each atom and
+how to calculate the interactions
+nstlist         = 1         ; Frequency to update the neighbor 
+list and long range forces
+cutoff-scheme	= Verlet    ; Buffered neighbor searching 
+ns_type         = grid      ; Method to determine neighbor list         
+(simple, grid)
+coulombtype     = cutoff    ; Treatment of long range electrostatic 
+interactions
+rcoulomb        = 1.0       ; Short-range electrostatic cut-off
+rvdw            = 1.0       ; Short-range Van der Waals cut-off
+pbc             = xyz       ; Periodic Boundary Conditions in all                 3 dimensions
+   
+\end{minted}
+
+we can execute the following command after making a molecular dynamics parameter file for the input for generating .tpr file \\
+
+\noindent\fbox{%
+\parbox{\textwidth}{%
+\texttt{gmx grompp -f ions.mdp -c 1xej\_solv.gro -o ions.tpr -p topol.top}
+}%
+}\\
+
+.tpr file is a binary file
+\subsection{Portable binary run input file (.tpr)}
+
+Now we have the .tpr file for adding ions to the solvate. Then we will execute the following command with the .tpr file as input.\\
+
+\noindent\fbox{%
+\parbox{\textwidth}{%
+\texttt{ gmx genion -s ions.tpr -o 1xej\_ions\_solv.gro -p topol.top -pname NA -nname CL -neutral}
+}%
+}\\
+
+While the gro file is generated the a prompt will come and we will chose the option 13 "SOL" for embedding ions. Our solvate have charge, but adding ions will will neutralize it. The above command will replace the water molecules with ions required to neutralize the charge.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{ions.png}
+    \caption{Ions in solvate}
+    
+\end{figure}
+
+\section{Energy Minimisation}
+\subsection{Minimisation tpr file}
+
+For minimisation we need a tpr file like the one we used to add ions. For generating the tpr file we will use the following molecular dynamics parameter file as input.
+
+\begin{minted}{python}
+; minim.mdp - used as input into grompp to generate xej.tpr
+; Parameters describing what to do, when to stop and what to 
+save
+integrator  = steep         ; Algorithm (steep = steepest 
+descent minimization)
+emtol       = 1000.0        ; Stop minimization when the 
+maximum force < 1000.0 kJ/mol/nm
+emstep      = 0.01          ; Minimization step size
+nsteps      = 50000         ; Maximum number of (minimization) 
+steps to perform
+
+; Parameters describing how to find the neighbors of each atom 
+and how to calculate the interactions
+nstlist         = 1         ; Frequency to update the neighbor 
+list and long range forces
+cutoff-scheme   = Verlet    ; Buffered neighbor searching
+ns_type         = grid      ; Method to determine neighbor list 
+(simple, grid)
+coulombtype     = PME       ; Treatment of long range 
+electrostatic interactions
+rcoulomb        = 1.0       ; Short-range electrostatic cut-off
+rvdw            = 1.0       ; Short-range Van der Waals cut-off
+pbc             = xyz       ; Periodic Boundary Conditions in 
+all 3 dimensions
+    
+\end{minted}
+
+Now we will execute the following command to generate the minimization tpr file\\
+
+\noindent\fbox{%
+
+\parbox{\textwidth}{%
+\texttt{gmx grompp -f minim.mdp -c 1xej.tpr -p topol.top}
+ 
+}%
+}
