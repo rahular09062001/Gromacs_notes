@@ -1,0 +1,46 @@
+\section{Water Box}
+\subsection{Preparaion of the input file of $H_2O$ molecule in Avogadro}
+
+We can make the $H_2O$ molecule input file  for  water  box using avogadro software
+\subsubsection{Opening Avogadro}
+By using the \textbf{Ctrl  + Alt + T} we can open the terminal. They  type \textbf{avogadro or avogadro2}. Then the Avogadro  window will open. By using the  draw tool  in the  top bar we draw the water molecule.
+\subsubsection{Exporting Water Molecule}
+In the \textbf{File} option in menu bar we can see the \textbf{Export} Option. In the export option there is \textbf{Molecule} option, click  that. In the tab opens we can select the \textbf{gro} format from the bottom right all file box. Change the  all files to  \textbf{GRO FORMAT}.  This  is  input format for gromacs. If the .gro format is not available then we have to install the openbabel for obtaining the format.  Then give the name as we wish with .gro  extension and save it.
+\subsection{Creating water box using GROMACS}
+
+Open the terminal and go the directory where we have saved the  input file of water molecule. Then execute the following command.\\
+
+\label{water_box}\begin{minted}{python}
+gmx insert-molecules -ci  water.gro -o  water_box.gro -nmol 2000 
+-box 5 5 5
+\end{minted} 
+
+\textbf{insert$-$molecules} command will insert molecules in the  box, \textbf{$-$ci} is followed by the name of input file, \textbf{$-o$} is followed by the output file name. \textbf{$-$nmol} is used to  specify the number of molecules in the box. \textbf{$-$box} specify the dimension of the box in  angstrom 
+
+\paragraph{}
+
+After the  gromacs command shown  above press enter.Then we can see the output  file in our  folder where we saved the input.
+
+\subsection{Visualisation of Water box  using VMD}
+
+We can visualise the waterbox by using the visualization software VMD.
+
+\paragraph{}
+
+Open the terminal and type VMD with the name of output file as shown below
+
+\begin{center}    
+\begin{minted}{python}
+
+vmd water_box.gro
+    
+\end{minted}
+\end{center}
+
+\includegraphics[scale=0.5]{waterbox.png}\\
+
+There are a lot of options avilable in vmd
+
+\subsubsection{Graphics in VMD}
+
+In graphics thers is the representaion option where we can change the the graphical representaionn output of 
